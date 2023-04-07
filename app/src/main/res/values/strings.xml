@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Wishlist App</string>
+    <string name="OnboardText1">Create wishlists for events and personal purposes, attach links and photos</string>
+    <string name="OnboardText2">Share your wishlists with your friends. You can turn on the booking option and each person will choose a gift to give for the celebration</string>
+    <string name="OnboardText3">You don\'t have to worry about what to give your friend. Just go to his profile and see his wishlists</string>
+    <string name="OnboardHead1">Сreate wishlists</string>
+    <string name="OnboardHead2">Share with friends</string>
+    <string name="OnboardHead3">Find out the desires of friends</string>
+    <string name="ButtonNext">Next</string>
+    <string name="ButtonStart">Start</string>
 </resources>

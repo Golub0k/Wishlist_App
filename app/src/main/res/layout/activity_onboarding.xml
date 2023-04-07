@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Onboarding">
+
+    <ImageView
+        android:id="@+id/OnboarImg1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/image_5" />
+
+    <TextView
+        android:id="@+id/OnboardHead1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="133dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="133dp"
+        android:fontFamily="@font/be_vietnam_semibold"
+        android:text="@string/OnboardHead1"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/OnboardText1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OnboarImg1" />
+
+    <TextView
+        android:id="@+id/OnboardText1"
+        android:layout_width="333dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="171dp"
+        android:fontFamily="@font/be_vietnam"
+        android:text="@string/OnboardText1"
+        android:textAlignment="center"
+        android:textColor="#555555"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OnboardHead1" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="110dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/button_template"
+        android:drawableRight="@drawable/right"
+        android:fontFamily="@font/be_vietnam"
+        android:text="@string/ButtonNext"
+        android:textColor="@color/base_0"
+        app:cornerRadius="15dp"
+        app:iconPadding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/count"
+        app:layout_constraintTop_toBottomOf="@+id/OnboardText1" />
+
+    <ImageView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="169dp"
+        android:layout_marginBottom="52dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OnboardText1"
+        app:srcCompat="@drawable/onboarding_count_1" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="111dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="38dp"
+        android:background="@color/base_0"
+        android:contentDescription="back"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintStart_toEndOf="@+id/count"
+        app:layout_constraintTop_toBottomOf="@+id/OnboardText1"
+        app:srcCompat="@drawable/button_left" />
+
+    <ImageView
+        android:id="@+id/OnboarImg2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="70dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/OnboardHead1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/image_4" />
+
+    <ImageView
+        android:id="@+id/OnboarImg3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="70dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/OnboardHead1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/image_7" />
+</androidx.constraintlayout.widget.ConstraintLayout>
