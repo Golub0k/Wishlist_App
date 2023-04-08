@@ -17,4 +17,6 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="birthday">Birthday</string>
+    <string name="register_sign_in">Already have an account? Sign in</string>
+    <string name="descritption__logo">logo</string>
 </resources>
