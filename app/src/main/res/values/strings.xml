@@ -8,4 +8,13 @@
     <string name="OnboardHead3">Find out the desires of friends</string>
     <string name="ButtonNext">Next</string>
     <string name="ButtonStart">Start</string>
+    <string name="button_sign_in">Sign in</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="app_description">Wishlist booking app</string>
+    <string name="button_sign_out">Sign out</string>
+    <string name="button_create_account">Create account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birthday">Birthday</string>
 </resources>
