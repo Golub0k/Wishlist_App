@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/mywishlists"
+        android:title="My wishlists" />
+    <item
+        android:id="@+id/menu_friends"
+        android:icon="@drawable/myfriends"
+        android:title="Friends" />
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/mainplus"
+        android:title="Add wishlist" />
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/account"
+        android:title="Profile" />
+</menu>
