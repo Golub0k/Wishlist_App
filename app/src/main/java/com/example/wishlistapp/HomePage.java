@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.wishlistapp.databinding.ActivityHomePageBinding;
@@ -32,7 +33,9 @@ public class HomePage extends AppCompatActivity {
                     replaceFragment(new MyFriendsFragment());
                     break;
                 case R.id.menu_add:
-                    replaceFragment(new AddWishlistFragment());
+                    Intent intent = new Intent(HomePage.this, AddWishlistActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
                 case R.id.menu_profile:
                     replaceFragment(new ProfileFragment());

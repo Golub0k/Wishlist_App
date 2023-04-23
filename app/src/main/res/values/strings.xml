@@ -21,4 +21,17 @@
     <string name="descritption__logo">logo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back">back</string>
+    <string name="new_wishlist">New wishlist</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="public_state">Public</string>
+    <string name="choose_a_category">Choose a category</string>
+    <string name="max_reserve">Max reserve</string>
+    <string name="items">Items</string>
+    <string name="save">save</string>
+    <string name="add_item">Add item</string>
+    <string name="annotation">Annotation</string>
+    <string name="links">Links</string>
+    <string name="add">Add</string>
 </resources>
