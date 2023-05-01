@@ -12,4 +12,9 @@
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
 
     </style>
+
+    <style name="CornerCut">
+        <item name="cornerSize">15dp</item>
+        <item name="cornerFamily">cut</item>
+    </style>
 </resources>

@@ -33,7 +33,7 @@ public class HomePage extends AppCompatActivity {
                     replaceFragment(new MyFriendsFragment());
                     break;
                 case R.id.menu_add:
-                    Intent intent = new Intent(HomePage.this, AddWishlistActivity.class);
+                    Intent intent = new Intent(HomePage.this, NewWishlistActivity.class);
                     startActivity(intent);
                     finish();
                     break;

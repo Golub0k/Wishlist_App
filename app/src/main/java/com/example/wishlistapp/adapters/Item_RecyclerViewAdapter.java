@@ -64,4 +64,6 @@ public class Item_RecyclerViewAdapter extends RecyclerView.Adapter<Item_Recycler
             delete = itemView.findViewById(R.id.btn_delete_item);
         }
     }
+
+
 }

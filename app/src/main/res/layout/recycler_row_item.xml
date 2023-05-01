@@ -24,32 +24,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="6dp"
             android:elevation="30dp">
 
-            <ImageView
-                android:id="@+id/card_item_image"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:padding="6dp"
+<!--            <ImageView-->
+<!--                android:id="@+id/card_item_image"-->
+<!--                android:layout_width="56dp"-->
+<!--                android:layout_height="56dp"-->
+<!--                android:background="#3F246E"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                app:circularflow_defaultRadius="5dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/min_logo" />-->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardMaxElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/min_logo" />
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/card_item_image"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/min_logo" />
+
+            </androidx.cardview.widget.CardView>/>
 
             <TextView
                 android:id="@+id/card_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:fontFamily="@font/be_vietnam_medium"
                 android:text="Item Name"
                 android:textColor="@color/base_900"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/card_item_image"
+                app:layout_constraintStart_toEndOf="@+id/cardView2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
