@@ -1,22 +1,22 @@
 package com.example.wishlistapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.wishlistapp.adapters.Item_RecyclerViewAdapter;
 import com.example.wishlistapp.models.Item;
 import com.example.wishlistapp.models.Wishlist;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,10 +46,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,12 +77,16 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
     Switch switch_public;
     ShapeableImageView set_wishlist_image;
     Uri wislistImage;
+    ProgressDialog loadingBar;
     final private StorageReference storageRef = FirebaseStorage.getInstance().getReference("ImageDB");
     final private StorageReference storageRefItems = FirebaseStorage.getInstance().getReference("ImageItemsDB");;
     final private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     Button btn_save;
     Uri upload_uri;
     UploadTask up;
+    Integer itemPosition;
+    Integer imageItemPosition;
+    //Stack<Pair<Integer, Stack<Integer>>> itemStack;
 
     public AddWishListFragment() {
         // Required empty public constructor
@@ -124,7 +125,7 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
         switch_public = view.findViewById((R.id.switch_public));
         set_wishlist_image = view.findViewById(R.id.add_wl_image);
         btn_save = view.findViewById(R.id.btn_save);
-        ProgressDialog loadingBar = new ProgressDialog(getActivity());
+        loadingBar = new ProgressDialog(getContext());
         switch_public.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -165,16 +166,14 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
                 }
                 else{
                 if(itemsF.size()>0){
+                    hideKeyboardFrom(getActivity(), getView());
                 loadingBar.setTitle("Create a wishlist");
                 loadingBar.setMessage("Please wait...");
                 loadingBar.setCanceledOnTouchOutside(false);
                 loadingBar.show();
-                createListItem();
+                //createListItem();
                 uploadToFirebase();
-                loadingBar.dismiss();
-                Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), HomePage.class);
-                startActivity(intent);}
+                }
                 else{
                     Toast.makeText(getActivity(), "Add at least one item", Toast.LENGTH_LONG).show();
                 }
@@ -244,13 +243,86 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
                             Wishlist wishlist = new Wishlist(user.getUid(), wl_name.getText().toString(), wl_description.getText().toString(), uri.toString(), switch_public.isChecked(), (double) seekbar.getValue(), itemsF);
-                            ref.child("Wishlists").child(ref.child("Wishlists").push().getKey()).setValue(wishlist);
+                            String key = ref.child("Wishlists").push().getKey();
+                            ref.child("Wishlists").child(key).setValue(wishlist);
+                            loadingBar.dismiss();
+                            Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getActivity(), HomePage.class);
+                            startActivity(intent);
                             //Toast.makeText( getActivity(), "Ok wl!", Toast.LENGTH_LONG).show();
-                        }
+
+                            ////////---------------Реализация с рандомным раскидыванием картинок по айтемсам
+//                            itemStack = new Stack<>(); //стек позиций
+//                            //заполняем стек
+//
+//                            for (int i = itemsF.size()-1; i >= 0; i--){
+//                                Pair<Integer, Stack<Integer>> itemsPair;
+//                                Item item = itemsF.get(i);
+//                                Stack <Integer> imgNumber = new Stack<>();
+//                                for (int j=item.getImage().length-1;j>=0; j--){
+//                                    imgNumber.push(j);
+//                                }
+//                                itemsPair = new Pair<>(i, imgNumber);
+//                                itemStack.push(itemsPair);
+//                            }
+//
+//                            //заливаем позиции и изобажения в бд
+//                            for (int i = 0; i < itemsF.size(); i++){
+//                                Item item = new Item(itemsF.get(i));  //
+//                                itemsF.get(i).deleteArray();
+//                                ref.child("Wishlists").child(key).child("items").child(Integer.toString(i)).setValue(itemsF.get(i));
+//                                int x = item.getImage().length;
+//                                for (int j = 0; j < x; j++){
+//                                Uri uriItem = item.getImage(j);
+//                                final StorageReference imageReferenceItem = storageRefItems.child(System.currentTimeMillis()+"."+ getFileExtension(uri));
+//                                imageReferenceItem.putFile(uriItem).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                                    @Override
+//                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                                        imageReferenceItem.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                                            @Override
+//                                            public void onSuccess(Uri uri) {
+//                                                String item_number = Integer.toString(itemStack.peek().first);
+//                                                String image_number = Integer.toString(itemStack.peek().second.pop());
+//                                                ref.child("Wishlists").child(key).child("items").child(item_number).child("image_uri").child(image_number).setValue(uri.toString());
+//                                                if (
+//                                                        itemStack.peek().second.isEmpty()
+//                                                ){itemStack.pop();
+//                                                    if (
+//                                                            itemStack.isEmpty()
+//                                                    ) {
+//                                                        loadingBar.dismiss();
+//                                                        Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
+//                                                        Intent intent = new Intent(getActivity(), HomePage.class);
+//                                                        startActivity(intent);
+//                                                    }
+//
+//                                                }
+//
+//                                            }
+//                                        });
+//                                    }
+//                                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                                    @Override
+//                                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//                                    }
+//                                }).addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        Toast.makeText( getActivity(), "Fail item", Toast.LENGTH_LONG).show();
+//
+//                                    }
+//                                });
+//
+//
+//                            }
+//
+//
+//                        }
+                            ////////--------------- Конец Реализация с рандомным раскидыванием картинок по айтемсам
 
                     }
-                });
-            }
+                }});}
+
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
@@ -268,11 +340,15 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
             if (user != null) {
                 Wishlist wishlist = new Wishlist(user.getUid(), wl_name.getText().toString(), wl_description.getText().toString(), null, switch_public.isChecked(), (double) seekbar.getValue(), itemsF);
                 ref.child("Wishlists").child(ref.child("Wishlists").push().getKey()).setValue(wishlist);
-                //Toast.makeText( getActivity(), "Ok wl!", Toast.LENGTH_LONG).show();
+                loadingBar.dismiss();
+                Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), HomePage.class);
+                startActivity(intent);
             }
         }
 
-    }
+
+}
 
     private String getFileExtension(Uri fileUri){
         ContentResolver contentResolver = getActivity().getContentResolver();
@@ -280,52 +356,101 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
         return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
     }
 
-    private void createListItem(){
-
-        for (int i=0; i< itemsF.size(); i++){
-            Item item = itemsF.get(i);
-            if (item.getImage() != null){
-            List<String> image_uri_list = new ArrayList<>(item.getImage().length);
-            for(int j = 0; j < item.getImage().length; j++){
-                Uri uri = item.getImage(j);
-
-                final StorageReference imageReferenceItem = storageRefItems.child(System.currentTimeMillis()+"."+ getFileExtension(uri));
-                imageReferenceItem.putFile(uri).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imageReferenceItem.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                if (user != null){
-
-                                    image_uri_list.add(uri.toString());
-
-                                }
-
-                            }
-                        });
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText( getActivity(), "Fail item", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-            }
-            item.setImage_uri(image_uri_list);
-            item.deleteArray();
-            itemsF.set(i, item);
-            }
-
-        }
-
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+//    private void createListItem(){
+//
+//        for (int i=0; i< itemsF.size(); i++){
+//            Item item = itemsF.get(i);
+//            if (item.getImage() != null){
+//            List<String> image_uri_list = new ArrayList<>(item.getImage().length);
+//            addUrl(item, image_uri_list, 0);
+//            item.setImage_uri(image_uri_list);
+//            item.deleteArray();
+//            itemsF.set(i, item);
+////            for(int j = 0; j < item.getImage().length; j++){
+////                Uri uri = item.getImage(j);
+////
+////                final StorageReference imageReferenceItem = storageRefItems.child(System.currentTimeMillis()+"."+ getFileExtension(uri));
+////                imageReferenceItem.putFile(uri).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+////                    @Override
+////                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+////                        imageReferenceItem.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+////                            @Override
+////                            public void onSuccess(Uri uri) {
+////                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+////                                if (user != null){
+////
+////                                    image_uri_list.add(uri.toString());
+////
+////                                }
+////
+////                            }
+////                        });
+////                    }
+////                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+////                    @Override
+////                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+////                    }
+////                }).addOnFailureListener(new OnFailureListener() {
+////                    @Override
+////                    public void onFailure(@NonNull Exception e) {
+////                        Toast.makeText( getActivity(), "Fail item", Toast.LENGTH_LONG).show();
+////                    }
+////                });
+////
+////            }
+////            item.setImage_uri(image_uri_list);
+////            item.deleteArray();
+////            itemsF.set(i, item);
+//            }
+//
+//        }
+//
+//    }
+
+//    private void addUrl(Item item, List<String> image_uri_list, Integer j){
+//            Uri uri = item.getImage(j);
+//            final StorageReference imageReferenceItem = storageRefItems.child(System.currentTimeMillis()+"."+ getFileExtension(uri));
+//            imageReferenceItem.putFile(uri).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    imageReferenceItem.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                            if (user != null){
+//
+//                                image_uri_list.add(uri.toString());
+//                                if (j+1<item.getImage().length){
+//                                addUrl(item, image_uri_list, j+1);}
+//                                else {
+//                                    return;
+//                                };
+//
+//
+//                            }
+//
+//                        }
+//                    });
+//                }
+//            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText( getActivity(), "Fail item", Toast.LENGTH_LONG).show();
+//                    return;
+//
+//                }
+//            });
+//        //while (j<item.getImage().length) {}
+//
+//    }
 
 
 }

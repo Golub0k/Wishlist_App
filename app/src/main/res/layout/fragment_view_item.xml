@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewItemFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <ImageButton
+                android:id="@+id/btn_back_from_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/back"
+                android:scaleType="fitStart"
+                android:src="@drawable/button_left_black" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/be_vietnam_semibold"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/view_item"
+                android:textColor="#000000"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_view_name_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/be_vietnam_semibold"
+            android:text="@string/name"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/item_view_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/be_vietnam_medium"
+            android:text="@string/no_info"
+            android:textAlignment="textStart"
+            android:textColor="@color/base_800" />
+
+        <TextView
+            android:id="@+id/item_view_annotation_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/be_vietnam_semibold"
+            android:text="@string/annotation"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/item_view_annotation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/be_vietnam_medium"
+            android:text="@string/no_info"
+            android:textAlignment="textStart"
+            android:textColor="@color/base_800" />
+
+        <TextView
+            android:id="@+id/item_view_links_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/be_vietnam_semibold"
+            android:text="@string/links"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/item_view_links"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/be_vietnam_medium"
+            android:text="@string/no_info"
+            android:textAlignment="textStart"
+            android:textColor="@color/base_800" />
+
+        <TextView
+            android:id="@+id/item_view_photos_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/be_vietnam_semibold"
+            android:text="@string/photos"
+            android:textAlignment="textStart"
+            android:textColor="#000000"
+            android:textSize="14sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_view_recycle_gallery_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:paddingLeft="4dp"
+            android:paddingTop="4dp"
+            android:paddingRight="4dp"
+            android:paddingBottom="74dp"
+            android:scrollbarStyle="insideInset" />
+    </LinearLayout>
+</FrameLayout>

@@ -13,6 +13,16 @@ public class Wishlist {
     Double max_reserve;
     List<Item> items;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    String key;
+
     public String getCreator_id() {
         return creator_id;
     }
@@ -71,6 +81,18 @@ public class Wishlist {
         this.max_reserve = max_reserve;
         this.items = items;
     }
+
+    public Wishlist(String creator_id, String name, String description, String uri, Boolean public_flag, Double max_reserve) {
+        this.creator_id = creator_id;
+        this.name = name;
+        this.description = description;
+        this.uri = uri;
+        this.public_flag = public_flag;
+        this.max_reserve = max_reserve;
+        this.items = items;
+    }
+
+    public Wishlist(){}
 
     public String getUri() {
         return uri;

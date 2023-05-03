@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.Bundle;
 import com.example.wishlistapp.databinding.ActivityNewWishlistBinding;
 import com.example.wishlistapp.models.Item;
@@ -36,7 +38,13 @@ public class NewWishlistActivity extends AppCompatActivity implements Add_Wish_I
         fragmentTransaction.replace(R.id.frameLayoutNewWishlist,fragment);
         fragmentTransaction.commit();
     }
-
+//    @Override
+//    public void onBackPressed() {
+//        // super.onBackPressed();
+//        Intent intent = new Intent(NewWishlistActivity.this, HomePage.class);
+//        startActivity(intent);
+//        finish();
+//    }
     @Override
     public void addItem(Item item, FragmentTransaction transaction, FragmentManager fragmentManager) {
         //добавляем новый item в лист items

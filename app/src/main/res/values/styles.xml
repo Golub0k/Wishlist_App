@@ -17,4 +17,8 @@
         <item name="cornerSize">15dp</item>
         <item name="cornerFamily">cut</item>
     </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
 </resources>

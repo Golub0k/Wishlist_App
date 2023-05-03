@@ -14,28 +14,58 @@ public class Item {
     String links;
     Uri[] image;
     List<String> image_uri;
+    String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
 
     public List<String> getImage_uri() {
-        return image_uri;
+        if (image_uri == null || image_uri.size() == 0){
+            return null;}
+        else return image_uri;
+    }
+
+    public String getImage_uri(int position) {
+        return image_uri.get(position);
     }
 
     public  void deleteArray(){
+
         image = null;
     }
+
     public void setImage_uri(List<String> image_uri) {
+
         this.image_uri = image_uri;
     }
 
     public void addImage_uri(String uri){
+
         this.image_uri.add(uri);
     }
 
-    public Item(String name, String annotation, String links, Uri[] image) {
+    public Item(String name, String annotation, String links , List<String> image_uri) {
         this.name = name;
         this.annotation = annotation;
         this.links = links;
-        this.image = image;
+        this.image_uri = image_uri;
     }
+    public Item(){}
+
+//    public Item(Item item) {
+//        this.name = item.name;
+//        this.annotation = item.annotation;
+//        this.links = item.links;
+//        this.image = item.image;
+//        this.image_uri = item.image_uri;
+//        this.key = item.key;
+//    }
 
     public String getName() {
         return name;

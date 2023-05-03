@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.wishlistapp.R;
 import com.example.wishlistapp.models.Item;
 
@@ -37,9 +38,9 @@ public class Item_RecyclerViewAdapter extends RecyclerView.Adapter<Item_Recycler
     @Override
     public void onBindViewHolder(@NonNull Item_RecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.name.setText(items.get(position).getName());
-        Uri[] arr1 = items.get(position).getImage();
-        if(items.get(position).getImage()!= null){
-        holder.imageView.setImageURI(items.get(position).getImage(0));}
+        //Uri[] arr1 = items.get(position).getImage();
+        if(items.get(position).getImage_uri()!= null){
+            Glide.with(holder.imageView.getContext()).load(items.get(position).getImage_uri(0)).placeholder(R.drawable.gallery).error(R.drawable.min_logo).into(holder.imageView);}
 
     }
 

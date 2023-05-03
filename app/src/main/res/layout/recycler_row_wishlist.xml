@@ -6,13 +6,13 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_item"
+        android:id="@+id/card_wishlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         app:cardCornerRadius="5dp"
         app:cardElevation="4dp"
         app:cardMaxElevation="6dp"
@@ -62,45 +62,46 @@
                     app:srcCompat="@drawable/min_logo" />
 
             </androidx.cardview.widget.CardView>
-            />
 
-            <TextView
-                android:id="@+id/card_item_name"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="24dp"
-                android:fontFamily="@font/be_vietnam_medium"
-                android:text="Item Name"
-                android:textColor="@color/base_900"
-                android:textSize="14sp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_edit_item"
+                app:layout_constraintEnd_toStartOf="@+id/icon_booking"
                 app:layout_constraintStart_toEndOf="@+id/cardView2"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
-                android:id="@+id/btn_edit_item"
+                <TextView
+                    android:id="@+id/card_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/be_vietnam_medium"
+                    android:text="@string/wishlist_name"
+                    android:textColor="@color/base_900"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/icon_booking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#00FFFFFF"
-                android:contentDescription="edit item"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_delete_item"
+                app:layout_constraintEnd_toStartOf="@+id/icon_private_public"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/edit"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:srcCompat="@drawable/booking" />
 
-            <ImageButton
-                android:id="@+id/btn_delete_item"
+            <ImageView
+                android:id="@+id/icon_private_public"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#00FFFFFF"
-                android:contentDescription="delete item"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/delete"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:srcCompat="@drawable/resource_private" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

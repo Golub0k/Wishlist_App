@@ -1,12 +1,15 @@
 package com.example.wishlistapp;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +23,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,9 +32,16 @@ import android.widget.Toast;
 
 import com.example.wishlistapp.adapters.Image_Item_RecyclerViewAdapter;
 import com.example.wishlistapp.models.Item;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,11 +55,15 @@ public class AddItemFragment extends Fragment implements View.OnClickListener, A
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     ArrayList<Uri> itemImage = new ArrayList<>();
+    final private StorageReference storageRefItems = FirebaseStorage.getInstance().getReference("ImageItemsDB");
     Image_Item_RecyclerViewAdapter adapter = new Image_Item_RecyclerViewAdapter(itemImage);
     Activity activity;
     TextInputEditText name;
     TextInputEditText annotation;
     TextInputEditText links;
+    List<String> image_uri;
+    FragmentManager fragmentManager;
+    ProgressDialog loadingBar;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -114,7 +130,7 @@ public class AddItemFragment extends Fragment implements View.OnClickListener, A
         switch(v.getId()){
 
             case R.id.button_back_add_wishlist:
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager = getActivity().getSupportFragmentManager();
 
                 // Создаем новый фрагмент
                 AddWishListFragment addWishListFragment = new AddWishListFragment();
@@ -142,15 +158,66 @@ public class AddItemFragment extends Fragment implements View.OnClickListener, A
                 }
                 else
                 {
-                Uri[] imgArr = new Uri[itemImage.size()];
+                    hideKeyboardFrom(getActivity(), getView());
+                    loadingBar = new ProgressDialog(getContext());
+                    loadingBar.setTitle("Adding an item to the wishlist");
+                    loadingBar.setMessage("One second...");
+                    loadingBar.setCanceledOnTouchOutside(false);
+                    loadingBar.show();
+                //Uri[] imgArr = new Uri[itemImage.size()];
+                    image_uri = new ArrayList<>();
                 if (itemImage.size()!=0){
-                imgArr = itemImage.toArray(imgArr);}
-                else imgArr = null;
-                Item item = new Item(name.getText().toString(), annotation.getText().toString(), links.getText().toString(), imgArr);
-                fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentManager fragmentManager2 = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction2 = fragmentManager.beginTransaction();
-                ((Add_Wish_Interface)activity).addItem(item, transaction2, fragmentManager2);}
+
+                    for (int i = 0; i < itemImage.size(); i++){
+                        Uri uriItem = itemImage.get(i);
+                        final StorageReference imageReferenceItem = storageRefItems.child(System.currentTimeMillis()+"."+ getFileExtension(uriItem));
+                                imageReferenceItem.putFile(uriItem).addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        imageReferenceItem.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                image_uri.add(uri.toString());
+                                                if (image_uri.size()==itemImage.size()){
+                                                    Item item = new Item(name.getText().toString(), annotation.getText().toString(), links.getText().toString(), image_uri);
+                                                    fragmentManager = getActivity().getSupportFragmentManager();
+                                                    FragmentManager fragmentManager2 = getActivity().getSupportFragmentManager();
+                                                    FragmentTransaction transaction2 = fragmentManager.beginTransaction();
+                                                    ((Add_Wish_Interface)activity).addItem(item, transaction2, fragmentManager2);
+                                                    loadingBar.dismiss();
+                                                }
+
+                                            }
+                                        });
+                                    }
+                                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText( getActivity(), "Fail add image in db", Toast.LENGTH_LONG).show();
+
+                                    }
+                                });
+
+
+                            }
+
+
+                //imgArr = itemImage.toArray(imgArr);}
+                //else imgArr = null;
+                }
+                else{
+                    Item item = new Item(name.getText().toString(), annotation.getText().toString(), links.getText().toString(), image_uri);
+                    fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager2 = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction2 = fragmentManager.beginTransaction();
+                    ((Add_Wish_Interface)activity).addItem(item, transaction2, fragmentManager2);
+                    loadingBar.dismiss();
+                }
+                }
 
                 break;
     }}
@@ -184,4 +251,14 @@ public class AddItemFragment extends Fragment implements View.OnClickListener, A
     }
 
     public void addItem(Item item, FragmentTransaction transaction, FragmentManager fragmentManager) {}
+    private String getFileExtension(Uri fileUri){
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(fileUri));
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
