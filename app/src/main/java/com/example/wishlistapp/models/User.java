@@ -1,16 +1,40 @@
 package com.example.wishlistapp.models;
 
 public class User {
-    private String email, password, firstName, lastName, birthday;
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String birthday;
+    private String profileImage;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private String key;
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public User(){}
 
-    public User(String email, String password, String firstName, String lastName, String birthday) {
+    public User(String email, String password, String firstName, String lastName, String birthday, String profileImage, String key) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
+        this.profileImage = profileImage;
     }
 
     public String getEmail() {

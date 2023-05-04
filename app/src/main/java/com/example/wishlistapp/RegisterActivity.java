@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -55,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         createAcc = (Button) findViewById(R.id.button_create_account);
         loadingBar = new ProgressDialog(this);
 
+        Locale.setDefault(Locale.ENGLISH);
         MaterialDatePicker datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
 
         birthdayInput.setOnClickListener(new View.OnClickListener() {

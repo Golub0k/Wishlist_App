@@ -46,4 +46,7 @@
     <string name="no_info">-</string>
     <string name="_0">0</string>
     <string name="str_private">Private</string>
+    <string name="profile">Profile</string>
+    <string name="wishlists">Wishlists</string>
+    <string name="edit_profile">Edit profile</string>
 </resources>

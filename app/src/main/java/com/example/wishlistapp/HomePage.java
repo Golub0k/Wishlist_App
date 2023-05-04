@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.wishlistapp.databinding.ActivityHomePageBinding;
-import com.example.wishlistapp.databinding.ActivityMainBinding;
+import com.example.wishlistapp.profile.ProfileFragment;
 
 public class HomePage extends AppCompatActivity {
 

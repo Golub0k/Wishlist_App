@@ -14,4 +14,7 @@
     <color name="base_400">#9D9D9D</color>
     <color name="base_800">#262626</color>
     <color name="orange_300">#FF845E</color>
+    <color name="green_50">#E6F5EE</color>
+    <color name="green_400">#51BB8C</color>
+    <color name="green_800">#1C7C54</color>
 </resources>
