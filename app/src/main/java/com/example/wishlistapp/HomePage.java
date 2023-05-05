@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.wishlistapp.friends.MyFriendsFragment;
 import com.example.wishlistapp.databinding.ActivityHomePageBinding;
 import com.example.wishlistapp.profile.ProfileFragment;
 
@@ -24,7 +25,7 @@ public class HomePage extends AppCompatActivity {
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
 
                 case R.id.menu_home:
                     replaceFragment(new MyWishlistsFragment());
@@ -35,7 +36,7 @@ public class HomePage extends AppCompatActivity {
                 case R.id.menu_add:
                     Intent intent = new Intent(HomePage.this, NewWishlistActivity.class);
                     startActivity(intent);
-                    //finish();
+                    finish();
                     break;
                 case R.id.menu_profile:
                     replaceFragment(new ProfileFragment());
@@ -46,11 +47,11 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
     }
 }

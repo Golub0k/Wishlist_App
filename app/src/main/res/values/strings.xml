@@ -41,12 +41,24 @@
     <string name="wishlist_name">Wishlist Name</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
     <string name="warning_title_delete">Deleting a wishlist</string>
+    <string name="warning_title_delete_friend">Deleting a friend</string>
+    <string name="confirm_title_add_friend">Adding to friends list</string>
     <string name="warning_text_delete">Do you really want to delete this wishlist?</string>
+    <string name="warning_text_delete_friend">Do you really want to delete this friend?</string>
+    <string name="confirm_text_add_friend">Do you really want to add this user to your friends list?</string>
+    <string name="confirm_text_add_friend_approve">This user has sent you a friend request.\nApprove or reject the application?</string>
     <string name="no_info">-</string>
     <string name="_0">0</string>
     <string name="str_private">Private</string>
     <string name="profile">Profile</string>
     <string name="wishlists">Wishlists</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="friends">Friends</string>
+    <string name="delete_friend">delete friend</string>
+    <string name="no_public_wishlists">There is no data to display.\nThis user hasn\'t public wishlists</string>
+    <string name="not_friend">You cannot view this user\'s wishlists.\nSend a friend request</string>
+    <string name="not_friend_request">You cannot view this user\'s wishlists.\nWait for your friend request to be approved</string>
 </resources>

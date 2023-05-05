@@ -1,5 +1,7 @@
 package com.example.wishlistapp.models;
 
+import java.util.List;
+
 public class User {
     private String email;
     private String password;
@@ -7,6 +9,16 @@ public class User {
     private String lastName;
     private String birthday;
     private String profileImage;
+
+    public List<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<String> friends) {
+        this.friends = friends;
+    }
+
+    private List<String> friends;
 
     public String getKey() {
         return key;
@@ -26,15 +38,18 @@ public class User {
         this.profileImage = profileImage;
     }
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String email, String password, String firstName, String lastName, String birthday, String profileImage, String key) {
+    public User(String email, String password, String firstName, String lastName, String birthday, String profileImage, String key, List<String> friends) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
         this.profileImage = profileImage;
+        this.key = key;
+        this.friends = friends;
     }
 
     public String getEmail() {

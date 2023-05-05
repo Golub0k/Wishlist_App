@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -70,6 +71,7 @@ public class EditProfile extends Fragment {
     String birthday_old;
     String password_old;
     String email_old;
+    ImageButton back;
     final private StorageReference storageRef = FirebaseStorage.getInstance().getReference("UsersDB");
     final private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -113,6 +115,7 @@ public class EditProfile extends Fragment {
         birthday.setText(getArguments().getString("birthday"));
         email.setText(getArguments().getString("email"));
         password.setText(getArguments().getString("password"));
+        back = view.findViewById(R.id.btn_back_from_edit_profile);
         if (getArguments().getString("profileImage") != null){
             Glide.with(getActivity()).load(getArguments().getString("profileImage")).into(profileImage);}
 
@@ -141,6 +144,15 @@ public class EditProfile extends Fragment {
                         birthday.setText(datePicker.getHeaderText());
                     }
                 });
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getParentFragmentManager().getBackStackEntryCount() > 0) {
+                    getParentFragmentManager().popBackStack();
+                }
             }
         });
 

@@ -30,6 +30,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,9 +62,11 @@ public class ViewWishlistFragment extends Fragment {
     ShapeableImageView view_wl_image;
     Item_RecyclerViewAdapter_For_ViewForm adapter;
     List<Item> items;
+    FirebaseUser currentUser;
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     ImageView delete;
+    ImageView edit;
 
     public ViewWishlistFragment() {
         // Required empty public constructor
@@ -91,42 +94,49 @@ public class ViewWishlistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_wishlist, container, false);
-
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         name = view.findViewById(R.id.wl_view_name_header);
         description = view.findViewById(R.id.text_description);
         view_wl_image = view.findViewById(R.id.view_wl_image);
         delete = view.findViewById(R.id.delete_wishlist_btn);
+        edit = view.findViewById(R.id.edit_wishlist_btn);
         private_public = view.findViewById(R.id.text_private_public);
         max_reserve = view.findViewById(R.id.max_reserve_number);
         icon_private_public = view.findViewById(R.id.icon_private_public_view);
 
         Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             if (!bundle.getString("Description").isEmpty()) {
-            description.setText(bundle.getString("Description"));}
+                description.setText(bundle.getString("Description"));
+            }
             name.setText(bundle.getString("Name"));
+            if (!bundle.getString("Creator_id").equals(currentUser.getUid().toString())) {
+                delete.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+            }
             key = bundle.getString("Key");
             imageUrl = bundle.getString("Image");
-            if (imageUrl!= null){
-            Glide.with(getActivity()).load(bundle.getString("Image")).into(view_wl_image);}
-            else{
+            if (imageUrl != null) {
+                Glide.with(getActivity()).load(bundle.getString("Image")).into(view_wl_image);
+            } else {
                 view_wl_image.setVisibility(View.GONE);
             }
 
-            if(bundle.getBoolean("Public")){
+            if (bundle.getBoolean("Public")) {
                 private_public.setText(getResources().getString(R.string.public_state));
                 icon_private_public.setImageDrawable(getResources().getDrawable(R.drawable.resource_public));
             }
 
-            if(bundle.getDouble("Reserve")>0){
-                max_reserve.setText(Integer.toString((int)bundle.getDouble("Reserve")));
+            if (bundle.getDouble("Reserve") > 0) {
+                max_reserve.setText(Integer.toString((int) bundle.getDouble("Reserve")));
             }
         }
 
         recyclerView = view.findViewById(R.id.recycler_view_items_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         items = new ArrayList<>();
         adapter = new Item_RecyclerViewAdapter_For_ViewForm(getActivity(), items, key);
         recyclerView.setAdapter(adapter);
@@ -136,7 +146,7 @@ public class ViewWishlistFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 items.clear();
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()){
+                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
                     item.setKey(itemSnapshot.getKey());
                     items.add(item);
@@ -144,6 +154,7 @@ public class ViewWishlistFragment extends Fragment {
                 adapter.notifyDataSetChanged();
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(getActivity(), "Ups", Toast.LENGTH_LONG).show();
@@ -161,10 +172,10 @@ public class ViewWishlistFragment extends Fragment {
     }
 
 
-    public void WarningDialog(View view){
+    public void WarningDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
         View viewD = LayoutInflater.from(getActivity()).inflate(R.layout.layout_warning_dialog,
-                (ConstraintLayout)view.findViewById(R.id.layoutDialogContainer)
+                (ConstraintLayout) view.findViewById(R.id.layoutDialogContainer)
         );
         builder.setView(viewD);
         ((TextView) viewD.findViewById(R.id.textTitle)).setText(getResources().getString(R.string.warning_title_delete));
@@ -179,19 +190,19 @@ public class ViewWishlistFragment extends Fragment {
             public void onClick(View view) {
                 alertDialog.dismiss();
                 final DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Wishlists");
-                if (imageUrl!=null){
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
-                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        reference.child(key).removeValue();
-                        Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), HomePage.class));
-                        getActivity().finish();
-                    }
-                });}
-                else{
+                if (imageUrl != null) {
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
+                    storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            reference.child(key).removeValue();
+                            Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), HomePage.class));
+                            getActivity().finish();
+                        }
+                    });
+                } else {
                     reference.child(key).removeValue();
                     Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), HomePage.class));
@@ -209,7 +220,7 @@ public class ViewWishlistFragment extends Fragment {
             }
         });
 
-        if (alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();

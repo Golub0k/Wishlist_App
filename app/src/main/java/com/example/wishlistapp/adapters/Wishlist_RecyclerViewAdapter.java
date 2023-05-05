@@ -67,6 +67,7 @@ public class Wishlist_RecyclerViewAdapter extends RecyclerView.Adapter<MyViewHol
                 intent.putExtra("Key",wishlists.get(holder.getAdapterPosition()).getKey());
                 intent.putExtra("Public",wishlists.get(holder.getAdapterPosition()).getPublic_flag());
                 intent.putExtra("Reserve",wishlists.get(holder.getAdapterPosition()).getMax_reserve());
+                intent.putExtra("Creator_id",wishlists.get(holder.getAdapterPosition()).getCreator_id());
                 //intent.putExtra("Items", wishlists.get(holder.getAdapterPosition()).getItems());
                 context.startActivity(intent);
             }

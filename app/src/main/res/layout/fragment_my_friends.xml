@@ -1,16 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyFriendsFragment">
+    tools:context=".friends.MyFriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Friends Fragment"
-        android:textSize="24dp"
-        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_back_from_add_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/back"
+                android:scaleType="fitStart"
+                android:src="@drawable/button_left_black"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/friend_list_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:fontFamily="@font/be_vietnam_semibold"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/friends"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5" />
+
+            <ImageButton
+                android:id="@+id/add_new_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="2dp"
+                android:layout_weight="0.25"
+                android:background="#00FFFFFF"
+                android:src="@drawable/plus"
+                app:tint="@color/base_900" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/friends_search_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxCornerRadiusBottomEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusTopStart="15dp"
+            app:endIconMode="custom"
+            app:startIconDrawable="@drawable/search">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_friends_input"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:drawablePadding="-10dp"
+                android:fontFamily="@font/be_vietnam"
+                android:gravity="center_vertical"
+                android:hint="@string/search"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textSize="12sp"
+                tools:ignore="TouchTargetSizeCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friends_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="26dp" />
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -34,6 +34,7 @@ import com.example.wishlistapp.models.Item;
 import com.example.wishlistapp.models.Wishlist;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -249,6 +250,9 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
                             Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getActivity(), HomePage.class);
                             startActivity(intent);
+                            BottomNavigationView bottomNavigationView;
+                            bottomNavigationView = (BottomNavigationView) getActivity().findViewById(R.id.bottomNavigationView);
+                            bottomNavigationView.setSelectedItemId(R.id.menu_home);
                             //Toast.makeText( getActivity(), "Ok wl!", Toast.LENGTH_LONG).show();
 
                             ////////---------------Реализация с рандомным раскидыванием картинок по айтемсам
@@ -344,6 +348,10 @@ public class AddWishListFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getActivity(), "New wishlist saved!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), HomePage.class);
                 startActivity(intent);
+                getActivity().finish();
+//                BottomNavigationView bottomNavigationView;
+//                bottomNavigationView = (BottomNavigationView) (HomePage)getActivity().findViewById(R.id.bottomNavigationView);
+//                bottomNavigationView.setSelectedItemId(R.id.menu_home);
             }
         }
 
