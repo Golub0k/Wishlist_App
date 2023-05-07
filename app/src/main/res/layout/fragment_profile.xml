@@ -72,8 +72,8 @@
                     android:id="@+id/profile_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:background="@color/base_100"
-                    android:src="@drawable/account"
+                    android:background="@color/purple_50"
+                    android:src="@drawable/friend_avatar"
                     app:shapeAppearanceOverlay="@style/circular" />
 
                 <ImageButton

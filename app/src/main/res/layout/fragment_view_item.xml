@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ViewItemFragment">
 
     <LinearLayout
@@ -105,7 +106,10 @@
             android:text="@string/no_info"
             android:textAlignment="textStart"
             android:textColor="@color/base_800" />
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp">
         <TextView
             android:id="@+id/item_view_photos_label"
             android:layout_width="match_parent"
@@ -127,5 +131,30 @@
             android:paddingRight="4dp"
             android:paddingBottom="74dp"
             android:scrollbarStyle="insideInset" />
+        <FrameLayout
+            android:id="@+id/bottom_frame_layout_add_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/linear_layout_bottom"
+            android:elevation="30dp">
+
+            <Button
+                android:id="@+id/btn_book"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_template"
+                android:fontFamily="@font/be_vietnam"
+                android:text="@string/book"
+                android:textColor="@color/base_0"
+                app:cornerRadius="15dp" />
+
+        </FrameLayout>
+    </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

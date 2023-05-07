@@ -34,11 +34,13 @@ public class Item_RecyclerViewAdapter_For_ViewForm extends RecyclerView.Adapter<
     Context context;
     private List<Item> items;
     private String wishlist_key;
+    private Integer user_reserve;
 
-    public Item_RecyclerViewAdapter_For_ViewForm(Context context, List<Item> items, String wishlist_key) {
+    public Item_RecyclerViewAdapter_For_ViewForm(Context context, List<Item> items, String wishlist_key, Integer user_reserve) {
         this.context = context;
         this.items = items;
         this.wishlist_key = wishlist_key;
+        this.user_reserve = user_reserve;
     }
 
     @Override
@@ -61,6 +63,7 @@ public class Item_RecyclerViewAdapter_For_ViewForm extends RecyclerView.Adapter<
                 Bundle bundle = new Bundle();
                 bundle.putString("item_key", items.get(holder.getAdapterPosition()).getKey());
                 bundle.putString("wishlist_key", wishlist_key);
+                bundle.putInt("user_reserve", user_reserve);
                 viewItemFragment.setArguments(bundle);
                 // Выполняем транзакцию для добавления фрагмента в контейнер
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -88,6 +91,10 @@ public class Item_RecyclerViewAdapter_For_ViewForm extends RecyclerView.Adapter<
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void setUser_reserve(Integer user_reserve){
+        this.user_reserve = user_reserve;
     }
 
 }

@@ -15,6 +15,7 @@ public class Item {
     Uri[] image;
     List<String> image_uri;
     String key;
+    String booked_person;
 
     public String getKey() {
         return key;
@@ -50,17 +51,37 @@ public class Item {
         this.image_uri.add(uri);
     }
 
+    public String getBooked_person() {
+        if (booked_person==null){
+            return "";
+        }
+        else return booked_person;
+    }
+
+    public void setBooked_person(String booked_person) {
+        this.booked_person = booked_person;
+    }
+
+    public Item(String name, String annotation, String links , List<String> image_uri, String booked_person) {
+        this.name = name;
+        this.annotation = annotation;
+        this.links = links;
+        this.image_uri = image_uri;
+        this.booked_person = booked_person;
+    }
     public Item(String name, String annotation, String links , List<String> image_uri) {
         this.name = name;
         this.annotation = annotation;
         this.links = links;
         this.image_uri = image_uri;
+        this.booked_person = "";
     }
     public Item(Item item) {
         this.name = item.getName();
         this.annotation = item.getAnnotation();
         this.links = item.getLinks();
         this.image_uri = item.getImage_uri();
+        this.booked_person = item.getBooked_person();
     }
     public Item(){}
 

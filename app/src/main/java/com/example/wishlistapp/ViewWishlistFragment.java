@@ -45,12 +45,6 @@ import java.util.List;
 
 public class ViewWishlistFragment extends Fragment {
 
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
     TextView name;
     TextView description;
     TextView private_public;
@@ -63,6 +57,7 @@ public class ViewWishlistFragment extends Fragment {
     Item_RecyclerViewAdapter_For_ViewForm adapter;
     List<Item> items;
     FirebaseUser currentUser;
+    Integer user_reserve;
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     ImageView delete;
@@ -75,8 +70,6 @@ public class ViewWishlistFragment extends Fragment {
     public static ViewWishlistFragment newInstance(String param1, String param2) {
         ViewWishlistFragment fragment = new ViewWishlistFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,8 +78,6 @@ public class ViewWishlistFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -103,7 +94,7 @@ public class ViewWishlistFragment extends Fragment {
         private_public = view.findViewById(R.id.text_private_public);
         max_reserve = view.findViewById(R.id.max_reserve_number);
         icon_private_public = view.findViewById(R.id.icon_private_public_view);
-
+        user_reserve = 0;
         Bundle bundle = getActivity().getIntent().getExtras();
         if (bundle != null) {
             if (!bundle.getString("Description").isEmpty()) {
@@ -138,7 +129,7 @@ public class ViewWishlistFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         items = new ArrayList<>();
-        adapter = new Item_RecyclerViewAdapter_For_ViewForm(getActivity(), items, key);
+        adapter = new Item_RecyclerViewAdapter_For_ViewForm(getActivity(), items, key, user_reserve);
         recyclerView.setAdapter(adapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Wishlists").child(key).child("items");
@@ -146,11 +137,16 @@ public class ViewWishlistFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 items.clear();
+                user_reserve = 0;
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
+                    if (item.getBooked_person() != null && item.getBooked_person().equals(currentUserId)){
+                        user_reserve++;
+                    }
                     item.setKey(itemSnapshot.getKey());
                     items.add(item);
                 }
+                adapter.setUser_reserve(user_reserve);
                 adapter.notifyDataSetChanged();
 
             }

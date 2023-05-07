@@ -61,4 +61,5 @@
     <string name="no_public_wishlists">There is no data to display.\nThis user hasn\'t public wishlists</string>
     <string name="not_friend">You cannot view this user\'s wishlists.\nSend a friend request</string>
     <string name="not_friend_request">You cannot view this user\'s wishlists.\nWait for your friend request to be approved</string>
+    <string name="book">Book</string>
 </resources>

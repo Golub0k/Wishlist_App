@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.wishlistapp.adapters.Image_Item_RecyclerViewAdapter;
 import com.example.wishlistapp.models.Item;
 import com.example.wishlistapp.models.Wishlist;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,12 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ViewItemFragment extends Fragment implements Image_Item_RecyclerViewAdapter.itemClickListener{
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+public class ViewItemFragment extends Fragment implements Image_Item_RecyclerViewAdapter.itemClickListener {
 
     private String mParam1;
     private String mParam2;
@@ -45,9 +43,15 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     Item item;
+    FirebaseUser currentUser;
+    String creatorId;
     RecyclerView recyclerView;
+    Button book;
+    Integer max_reserve;
     List<String> image_uri = new ArrayList<>();
     Image_Item_RecyclerViewAdapter adapter;
+    Integer user_reserve;
+    String itemKey;
 
     public ViewItemFragment() {
         // Required empty public constructor
@@ -56,8 +60,6 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
     public static ViewItemFragment newInstance(String param1, String param2) {
         ViewItemFragment fragment = new ViewItemFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,8 +68,6 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -80,12 +80,16 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
         item_annotation = view.findViewById(R.id.item_view_annotation);
         item_links = view.findViewById(R.id.item_view_links);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        book = view.findViewById(R.id.btn_book);
+        max_reserve = 0;
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        user_reserve = 0;
 
-
-        String itemKey = getArguments().getString("item_key");
+        itemKey = getArguments().getString("item_key");
         String wishlistKey = getArguments().getString("wishlist_key");
+        user_reserve = getArguments().getInt("user_reserve");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Wishlists").child(wishlistKey).child("items").child(itemKey);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Wishlists").child(wishlistKey);
         eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -97,7 +101,9 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
 //                    String name = snapshot.child("name").getValue(String.class);
 //                    String annotation = snapshot.child("annotation").getValue(String.class);
 //                    String links = snapshot.child("links").getValue(String.class);
-                item = snapshot.getValue(Item.class);
+                max_reserve = snapshot.child("max_reserve").getValue(Integer.class);
+                creatorId = snapshot.child("creator_id").getValue(String.class);
+                item = snapshot.child("items").child(itemKey).getValue(Item.class);
                 updateInfo();
 
             }
@@ -129,6 +135,37 @@ public class ViewItemFragment extends Fragment implements Image_Item_RecyclerVie
             adapter = new Image_Item_RecyclerViewAdapter(item.getImage_uri(), this);
             recyclerView.setAdapter(adapter);
         }
+        if (max_reserve == 0) {
+            book.setVisibility(View.GONE);
+        } else {
+//            if (currentUser.getUid() != creatorId) {
+//                book.setVisibility(View.VISIBLE);
+                if (item.getBooked_person()!= null && item.getBooked_person().equals(currentUser.getUid())){
+                    book.setText("Cancel your booking");
+                    book.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            user_reserve--;
+                            book.setText("Book");
+                            databaseReference.child("items").child(itemKey).child("booked_person").setValue("");
+                        }
+                    });
+                }
+                else{
+                    if (user_reserve<max_reserve && item.getBooked_person().isEmpty()){
+                        book.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                databaseReference.child("items").child(itemKey).child("booked_person").setValue(currentUser.getUid());
+                            }
+                        });
+                    }
+                    else{
+                        book.setEnabled(false);
+                    }
+                }
+            }
+//        }
     }
 
     @Override
