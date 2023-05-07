@@ -5,9 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import com.example.wishlistapp.databinding.ActivityNewWishlistBinding;
+
 import com.example.wishlistapp.models.Item;
 
 import java.util.ArrayList;
@@ -17,6 +16,7 @@ public class NewWishlistActivity extends AppCompatActivity implements Add_Wish_I
     ArrayList<Item> items = new ArrayList<>();
     //ActivityNewWishlistBinding binding;
     AddWishListFragment addWishListFragment;
+    AddItemFragment addItemFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +50,31 @@ public class NewWishlistActivity extends AppCompatActivity implements Add_Wish_I
         //добавляем новый item в лист items
         items.add(item);
         addWishListFragment.setItems (items);
-        transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayoutNewWishlist, addWishListFragment);
-        transaction.commit();
+//        transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.frameLayoutNewWishlist, addWishListFragment);
+//        transaction.commit();
 
     }
 
+    @Override
+    public void editItem(Item item, Integer position, String parent_key, FragmentTransaction transaction, FragmentManager fragmentManager) {
+        addItemFragment = new AddItemFragment();
+
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayoutNewWishlist, addItemFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        addItemFragment.setItem(item, position, parent_key);
+    }
+
+    @Override
+    public void updateItem(Item item, Integer position, FragmentTransaction transaction, FragmentManager fragmentManager) {
+        //добавляем новый item в лист items
+        //items.set(position, item);
+        addWishListFragment.updateItems (item, position);
+//        transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.frameLayoutNewWishlist, addWishListFragment);
+//        transaction.commit();
+
+    }
 }

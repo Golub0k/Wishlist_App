@@ -56,6 +56,12 @@ public class Item {
         this.links = links;
         this.image_uri = image_uri;
     }
+    public Item(Item item) {
+        this.name = item.getName();
+        this.annotation = item.getAnnotation();
+        this.links = item.getLinks();
+        this.image_uri = item.getImage_uri();
+    }
     public Item(){}
 
 //    public Item(Item item) {

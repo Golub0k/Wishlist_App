@@ -168,6 +168,21 @@ public class ViewWishlistFragment extends Fragment {
             }
         });
 
+        edit.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewWishlistActivity.class);
+                intent.putExtra("Image", imageUrl);
+                intent.putExtra("Description", bundle.getString("Description"));
+                intent.putExtra("Name", bundle.getString("Name"));
+                intent.putExtra("Key",key);
+                intent.putExtra("Public",bundle.getBoolean("Public"));
+                intent.putExtra("Reserve",bundle.getDouble("Reserve"));
+                intent.putExtra("Creator_id",bundle.getString("Creator_id"));
+                startActivity(intent);
+            }
+        }));
+
         return view;
     }
 

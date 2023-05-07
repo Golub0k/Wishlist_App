@@ -31,7 +31,7 @@
                 android:src="@drawable/button_left_black" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/header_add_or_edit_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

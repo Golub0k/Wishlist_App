@@ -22,6 +22,15 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
+        <ImageView
+            android:id="@+id/delete_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            app:srcCompat="@drawable/delete_image" />
+
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
